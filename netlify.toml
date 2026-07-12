@@ -1,0 +1,13 @@
+# Netlify serves the pre-built release/ folder (latest.yml + installer).
+# Build locally first:  npm run release:netlify
+# Then deploy:          npm run publish:netlify
+
+[build]
+  publish = "release"
+  command = "echo Skip — upload a local build from the release/ folder"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=300"

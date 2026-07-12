@@ -1,0 +1,443 @@
+================================================================================
+                    OLITECHHUB END USER LICENSE AGREEMENT (EULA)
+                         Terms and Conditions of Use
+================================================================================
+
+IMPORTANT — PLEASE READ CAREFULLY BEFORE INSTALLING OR USING THIS SOFTWARE.
+
+This End User License Agreement ("Agreement") is a legally binding contract
+between you (the "Licensee", "Client", "You", or "Your") and Olitech Hub
+("Licensor", "Company", "We", "Us", or "Our") governing your installation,
+access, and use of the OLITECHHUB software application, including all related
+documentation, updates, modules, and components (collectively, the "Software").
+
+BY CLICKING "I AGREE", "ACCEPT", OR BY INSTALLING, COPYING, ACCESSING, OR
+OTHERWISE USING THE SOFTWARE, YOU ACKNOWLEDGE THAT YOU HAVE READ THIS
+AGREEMENT, UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS.
+
+IF YOU DO NOT AGREE TO THESE TERMS, DO NOT INSTALL OR USE THE SOFTWARE.
+CLICK "DECLINE" OR "CANCEL" AND EXIT THE INSTALLER IMMEDIATELY.
+
+If you are accepting this Agreement on behalf of a business, organization, or
+other legal entity, you represent that you have authority to bind that entity
+to these terms. In that case, "You" and "Your" refer to that entity.
+
+
+--------------------------------------------------------------------------------
+1. PARTIES AND SOFTWARE IDENTIFICATION
+--------------------------------------------------------------------------------
+
+1.1 Licensor / Company Owner
+    Name:       Olitech Hub
+    Location:   Sonatube
+    Product:    OLITECHHUB
+
+1.2 Developers
+    - Kwizera Olivier
+    - Muhire Hillary
+
+1.3 Contact Details
+    - muhirehillary720@gmail.com
+    - kwizera06@gmail.com
+
+1.4 Software Description
+    OLITECHHUB is a proprietary business software application designed for
+    supermarket / retail point-of-sale (POS), inventory, sales, reporting,
+    user management, and related operational functions. The Software may
+    include a desktop application, related services, APIs, and updates
+    provided by Olitech Hub.
+
+
+--------------------------------------------------------------------------------
+2. ACCEPTANCE OF TERMS
+--------------------------------------------------------------------------------
+
+2.1 Installation constitutes acceptance. Completing the installation process
+    and selecting "I Agree" / "Accept" confirms your acceptance of this
+    Agreement in full.
+
+2.2 Continued use constitutes ongoing acceptance. Each time you launch or
+    use the Software after installation, you reaffirm your acceptance of
+    these Terms and any updated terms communicated by Olitech Hub.
+
+2.3 If any provision of this Agreement is unacceptable to you, your sole
+    remedy is to decline installation and refrain from using the Software.
+
+
+--------------------------------------------------------------------------------
+3. GRANT OF LICENSE
+--------------------------------------------------------------------------------
+
+3.1 Subject to your continuous compliance with this Agreement and any
+    applicable commercial contract, subscription, or payment terms with
+    Olitech Hub, we grant you a limited, non-exclusive, non-transferable,
+    non-sublicensable, revocable license to install and use the Software
+    solely for your internal business operations.
+
+3.2 The license is granted for use on devices and locations authorized under
+    your commercial arrangement with Olitech Hub (for example, a licensed
+    store, branch, or workstation count).
+
+3.3 This Agreement does not transfer ownership of the Software to you. All
+    rights not expressly granted are reserved by Olitech Hub.
+
+
+--------------------------------------------------------------------------------
+4. OWNERSHIP AND INTELLECTUAL PROPERTY
+--------------------------------------------------------------------------------
+
+4.1 The Software, including but not limited to its source code, object code,
+    design, user interface, databases schemas, branding, logos, trademarks,
+    documentation, algorithms, and updates, is and remains the exclusive
+    intellectual property of Olitech Hub and its developers.
+
+4.2 "OLITECHHUB", "Olitech Hub", and related marks are trademarks or trade
+    names of Olitech Hub. You may not use these marks without prior written
+    permission, except as necessary to identify licensed use of the Software.
+
+4.3 You acquire no right, title, or interest in the Software beyond the
+    limited license granted herein.
+
+4.4 Any feedback, suggestions, or ideas you provide regarding the Software
+    may be used by Olitech Hub without obligation or compensation to you.
+
+
+--------------------------------------------------------------------------------
+5. LICENSE RESTRICTIONS
+--------------------------------------------------------------------------------
+
+You shall NOT, and shall not permit any third party to:
+
+5.1 Copy, reproduce, distribute, publish, rent, lease, lend, sell, sublicense,
+    assign, or otherwise transfer the Software, except as expressly permitted
+    in writing by Olitech Hub;
+
+5.2 Reverse engineer, decompile, disassemble, decrypt, or attempt to derive
+    the source code, architecture, or underlying ideas of the Software,
+    except to the limited extent that applicable law prohibits such
+    restriction;
+
+5.3 Modify, adapt, translate, or create derivative works based on the
+    Software;
+
+5.4 Remove, alter, or obscure any copyright, trademark, proprietary, or
+    legal notices contained in the Software;
+
+5.5 Circumvent, disable, or interfere with security, licensing, authentication,
+    access-control, or update mechanisms;
+
+5.6 Use the Software to develop a competing product or service;
+
+5.7 Use the Software for any unlawful, fraudulent, harmful, or unauthorized
+    purpose;
+
+5.8 Share login credentials, PIN codes, or access tokens in a manner that
+    compromises system security or violates your internal controls;
+
+5.9 Host, redistribute, or make the Software available on public networks,
+    app stores, or download sites without written authorization;
+
+5.10 Exceed the number of seats, terminals, branches, or users authorized
+     under your commercial agreement.
+
+
+--------------------------------------------------------------------------------
+6. ACCOUNT ACCESS, SECURITY, AND USER RESPONSIBILITY
+--------------------------------------------------------------------------------
+
+6.1 You are responsible for all activity that occurs under accounts, user
+    profiles, PINs, and credentials issued for your organization.
+
+6.2 You must maintain appropriate administrative controls, including role
+    assignment, password/PIN hygiene, and prompt revocation of access for
+    former staff.
+
+6.3 You must notify Olitech Hub promptly if you suspect unauthorized access,
+    data breach, or misuse of the Software.
+
+6.4 Olitech Hub is not liable for losses arising from your failure to secure
+    devices, networks, credentials, or physical access to POS terminals.
+
+
+--------------------------------------------------------------------------------
+7. DATA, PRIVACY, AND BUSINESS RECORDS
+--------------------------------------------------------------------------------
+
+7.1 The Software may process business data including products, prices, sales,
+    inventory, expenses, customer credit information, staff activity, and
+    related operational records ("Client Data").
+
+7.2 You retain ownership of your Client Data. You grant Olitech Hub a limited
+    right to process Client Data solely as needed to provide, maintain,
+    support, secure, and improve the Software and related services.
+
+7.3 You are responsible for the accuracy, legality, and retention of Client
+    Data entered into the Software, including compliance with applicable
+    consumer, tax, employment, and data-protection requirements.
+
+7.4 You should maintain independent backups of critical business records.
+    While Olitech Hub may provide technical safeguards, you remain
+    responsible for your own backup and disaster-recovery practices unless
+    a separate written service agreement states otherwise.
+
+7.5 Olitech Hub will not sell your Client Data to third parties. Access by
+    support staff, if required, will be limited to legitimate support,
+    maintenance, or security purposes.
+
+
+--------------------------------------------------------------------------------
+8. UPDATES, UPGRADES, AND AUTOMATIC UPDATES
+--------------------------------------------------------------------------------
+
+8.1 Olitech Hub may provide patches, bug fixes, security updates, feature
+    enhancements, or new versions of the Software ("Updates").
+
+8.2 Updates may be delivered manually or automatically. By installing the
+    Software, you consent to Update checks and, where enabled, download and
+    installation of Updates.
+
+8.3 Some Updates may be mandatory for security, licensing, or compatibility
+    reasons. Failure to install required Updates may result in limited
+    functionality or suspension of access.
+
+8.4 This Agreement applies to all Updates unless accompanied by separate
+    terms, in which case those terms prevail for the Update.
+
+
+--------------------------------------------------------------------------------
+9. SUPPORT AND CONTACT
+--------------------------------------------------------------------------------
+
+9.1 Technical support and commercial inquiries may be directed to:
+
+    Olitech Hub
+    Location: Sonatube
+    Email:    muhirehillary720@gmail.com
+              kwizera06@gmail.com
+    Developers: Kwizera Olivier; Muhire Hillary
+
+9.2 Support availability, response times, and service levels (if any) are
+    governed by your separate commercial or support agreement with Olitech Hub.
+    Unless expressly agreed in writing, support is provided on a commercially
+    reasonable efforts basis.
+
+
+--------------------------------------------------------------------------------
+10. FEES, LICENSING STATUS, AND SUSPENSION
+--------------------------------------------------------------------------------
+
+10.1 Use of the Software may be subject to license fees, subscription fees,
+     implementation fees, or other commercial terms agreed separately.
+
+10.2 Failure to pay amounts due, or use beyond the licensed scope, may result
+     in suspension or termination of access after notice where reasonably
+     practicable.
+
+10.3 Upon suspension or termination, your license ends and you must stop using
+     the Software, except as needed to export your Client Data where Olitech
+     Hub reasonably enables such export.
+
+
+--------------------------------------------------------------------------------
+11. WARRANTY DISCLAIMER
+--------------------------------------------------------------------------------
+
+11.1 THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF
+     ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE.
+
+11.2 TO THE MAXIMUM EXTENT PERMITTED BY LAW, OLITECH HUB DISCLAIMS ALL
+     WARRANTIES, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR
+     A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, AND ANY WARRANTIES ARISING
+     FROM COURSE OF DEALING OR USAGE OF TRADE.
+
+11.3 Olitech Hub does not warrant that the Software will be uninterrupted,
+     error-free, virus-free, or compatible with all hardware, networks, or
+     third-party systems, or that defects will be corrected immediately.
+
+11.4 You acknowledge that retail operations depend on many factors outside
+     Olitech Hub's control, including power supply, internet connectivity,
+     hardware condition, user training, and data entry accuracy.
+
+
+--------------------------------------------------------------------------------
+12. LIMITATION OF LIABILITY
+--------------------------------------------------------------------------------
+
+12.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, OLITECH HUB AND ITS
+     DEVELOPERS, OFFICERS, EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY
+     INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY
+     DAMAGES, INCLUDING LOSS OF PROFITS, REVENUE, DATA, GOODWILL, BUSINESS
+     INTERRUPTION, OR PROCUREMENT OF SUBSTITUTE SYSTEMS, EVEN IF ADVISED OF
+     THE POSSIBILITY OF SUCH DAMAGES.
+
+12.2 TO THE MAXIMUM EXTENT PERMITTED BY LAW, OLITECH HUB'S TOTAL AGGREGATE
+     LIABILITY ARISING OUT OF OR RELATED TO THIS AGREEMENT OR THE SOFTWARE
+     SHALL NOT EXCEED THE AMOUNTS ACTUALLY PAID BY YOU TO OLITECH HUB FOR THE
+     SOFTWARE LICENSE DURING THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE
+     CLAIM.
+
+12.3 The limitations in this section apply whether the claim is based on
+     contract, tort (including negligence), strict liability, or any other
+     theory.
+
+
+--------------------------------------------------------------------------------
+13. INDEMNITY
+--------------------------------------------------------------------------------
+
+You agree to indemnify, defend, and hold harmless Olitech Hub, its developers,
+and affiliates from and against any claims, damages, losses, liabilities, and
+expenses (including reasonable legal fees) arising out of or related to:
+
+(a) your misuse of the Software;
+(b) your breach of this Agreement;
+(c) your Client Data or business practices;
+(d) unauthorized access resulting from your failure to safeguard credentials
+    or devices; or
+(e) any claim by your employees, customers, or suppliers related to your use
+    of the Software, except to the extent caused by Olitech Hub's willful
+    misconduct.
+
+
+--------------------------------------------------------------------------------
+14. TERM AND TERMINATION
+--------------------------------------------------------------------------------
+
+14.1 This Agreement begins when you accept it and continues until terminated.
+
+14.2 You may terminate by uninstalling the Software and ceasing all use,
+     subject to any surviving payment or contractual obligations.
+
+14.3 Olitech Hub may terminate or suspend this Agreement if you materially
+     breach its terms, fail to pay applicable fees, misuse the Software, or
+     if continued provision becomes unlawful or commercially impracticable.
+
+14.4 Upon termination, Sections concerning ownership, restrictions,
+     disclaimers, limitation of liability, indemnity, and governing law shall
+     survive.
+
+
+--------------------------------------------------------------------------------
+15. AUDIT AND COMPLIANCE
+--------------------------------------------------------------------------------
+
+Olitech Hub may, upon reasonable notice, request information reasonably
+necessary to verify that your use complies with the licensed scope. You agree
+to cooperate in good faith with such verification.
+
+
+--------------------------------------------------------------------------------
+16. THIRD-PARTY COMPONENTS AND SERVICES
+--------------------------------------------------------------------------------
+
+16.1 The Software may incorporate or interact with third-party libraries,
+     operating systems, cloud services, payment tools, or hardware devices.
+     Those components are subject to their own terms.
+
+16.2 Olitech Hub is not responsible for outages, defects, or policy changes of
+     third-party providers outside its reasonable control.
+
+
+--------------------------------------------------------------------------------
+17. EXPORT, LOCAL LAW, AND ACCEPTABLE USE
+--------------------------------------------------------------------------------
+
+17.1 You agree to use the Software in compliance with all applicable laws and
+     regulations in your jurisdiction, including tax, consumer protection,
+     employment, and data protection laws.
+
+17.2 You are solely responsible for configuring the Software (including tax
+     rates, receipts, and operational policies) to meet your legal and
+     business requirements.
+
+
+--------------------------------------------------------------------------------
+18. GOVERNING LAW AND DISPUTES
+--------------------------------------------------------------------------------
+
+18.1 This Agreement shall be governed by and construed in accordance with the
+     laws of the Republic of Rwanda, without regard to conflict-of-law rules.
+
+18.2 The parties shall first attempt to resolve disputes amicably through
+     good-faith negotiations via the contact emails listed in this Agreement.
+
+18.3 If a dispute cannot be resolved amicably within a reasonable period, it
+     may be submitted to the competent courts of Rwanda, unless the parties
+     agree in writing to mediation or arbitration.
+
+
+--------------------------------------------------------------------------------
+19. CHANGES TO THIS AGREEMENT
+--------------------------------------------------------------------------------
+
+19.1 Olitech Hub may update this Agreement from time to time. Material changes
+     may be communicated through the Software, installer, email, or other
+     reasonable means.
+
+19.2 Continued use of the Software after the effective date of updated terms
+     constitutes acceptance of those terms, except where applicable law
+     requires additional consent.
+
+
+--------------------------------------------------------------------------------
+20. GENERAL PROVISIONS
+--------------------------------------------------------------------------------
+
+20.1 Entire Agreement. This Agreement, together with any written commercial
+     contract between you and Olitech Hub, constitutes the entire agreement
+     regarding the Software. If there is a conflict, the signed commercial
+     contract controls for commercial terms; this EULA controls for software
+     license terms unless the commercial contract expressly states otherwise.
+
+20.2 Severability. If any provision is held unenforceable, the remaining
+     provisions remain in full force.
+
+20.3 Waiver. Failure to enforce any provision is not a waiver of future
+     enforcement.
+
+20.4 Assignment. You may not assign this Agreement without Olitech Hub's prior
+     written consent. Olitech Hub may assign this Agreement to a successor in
+     connection with a merger, acquisition, or sale of assets.
+
+20.5 Force Majeure. Olitech Hub is not liable for delays or failures caused by
+     events beyond its reasonable control, including natural disasters, power
+     failures, network outages, labor disputes, war, or government actions.
+
+20.6 Notices. Notices under this Agreement may be sent to the contact emails
+     listed above, or to any address you provide to Olitech Hub.
+
+
+--------------------------------------------------------------------------------
+21. ACKNOWLEDGEMENT AND ACCEPTANCE
+--------------------------------------------------------------------------------
+
+BY INSTALLING OR USING OLITECHHUB, YOU ACKNOWLEDGE THAT:
+
+  ✓ You have read and understood this End User License Agreement;
+  ✓ You agree to be bound by all Terms and Conditions stated herein;
+  ✓ You are authorized to accept these terms for yourself or your organization;
+  ✓ You understand that OLITECHHUB is proprietary software owned by Olitech Hub;
+  ✓ You will use the Software only as licensed and in accordance with the law.
+
+IF YOU DO NOT AGREE, SELECT "DECLINE" / "CANCEL" AND DO NOT INSTALL THE SOFTWARE.
+
+
+--------------------------------------------------------------------------------
+22. COPYRIGHT NOTICE
+--------------------------------------------------------------------------------
+
+Copyright © 2026 Olitech Hub. All rights reserved.
+
+OLITECHHUB Software
+Developed by Kwizera Olivier and Muhire Hillary
+Company: Olitech Hub — Sonatube
+Contact: muhirehillary720@gmail.com | kwizera06@gmail.com
+
+Unauthorized copying, distribution, modification, or use of this Software,
+in whole or in part, is strictly prohibited and may result in civil and/or
+criminal liability.
+
+
+================================================================================
+                         END OF AGREEMENT — OLITECHHUB EULA
+================================================================================

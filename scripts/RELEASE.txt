@@ -1,0 +1,90 @@
+OLITECHHUB — How to ship updates (no reinstall for users)
+=========================================================
+
+Your app ALREADY supports auto-updates (like VS Code / Cursor):
+  - Checks on startup (after 8 seconds) and every 4 hours
+  - Downloads updates in the background
+  - Shows a banner: "Restart & update"
+  - User clicks once — app restarts on the new version
+
+Users do NOT need to uninstall. You only publish new files online.
+
+
+STEP 1 — Bump the version
+-------------------------
+Edit package.json before each release:
+
+  "version": "1.1.0"   →   "1.2.0"
+
+Every release MUST use a higher version number than the last one.
+
+
+STEP 2 — Build the installer
+----------------------------
+From the project folder:
+
+  npm run release
+
+This creates files in the release/ folder:
+  - latest.yml                    ← update manifest (required)
+  - OLITECHHUB-Setup-1.1.0.exe    ← full installer
+  - OLITECHHUB-Setup-1.1.0.exe.blockmap  ← optional, faster delta updates
+
+
+STEP 3 — Upload to your update server
+-------------------------------------
+Upload ALL files from release/ to this URL (configured in electron-builder.yml):
+
+  https://releases.olitechhub.com/desktop/
+
+The folder must be publicly reachable over HTTPS and contain at minimum:
+  latest.yml
+  OLITECHHUB-Setup-<version>.exe
+
+Test in a browser:
+  https://releases.olitechhub.com/desktop/latest.yml
+  → should show version, sha512, and file name
+
+
+STEP 4 — Users get the update automatically
+-------------------------------------------
+Installed apps (v1.0.0 or newer with updater) will:
+  1. Fetch latest.yml from the URL above
+  2. Compare version numbers
+  3. Download the new .exe if a newer version exists
+  4. Show the green banner at the top of the app
+
+
+Hosting options (pick one)
+--------------------------
+A) Your own domain (current config)
+   releases.olitechhub.com → static file hosting (Cloudflare, nginx, S3, etc.)
+
+B) GitHub Releases (free, easy)
+   1. Create a GitHub repo for olitechdesktop
+   2. Create a release, upload latest.yml + .exe
+   3. Change electron-builder.yml publish url to:
+      https://github.com/YOUR_USER/YOUR_REPO/releases/latest/download/
+   4. Rebuild once with the new URL, then future updates use that host
+
+C) Cloudflare R2 / AWS S3 / Netlify
+   Any HTTPS static host works with the "generic" provider.
+
+
+Important notes
+---------------
+- Your existing v1.0.0 installer WILL receive updates once you host v1.1.0+ online
+  (if it was built from this project — it includes electron-updater).
+- If an old build had NO updater code, users need ONE manual reinstall to v1.1.0.
+  After that, all future updates are automatic.
+- Change the update URL in electron-builder.yml BEFORE building if you switch hosts.
+- Unsigned Windows builds work with verifyUpdateCodeSignature: false (already set).
+
+
+Quick checklist per release
+---------------------------
+[ ] Bump version in package.json
+[ ] npm run release
+[ ] Upload release/latest.yml + release/OLITECHHUB-Setup-*.exe (+ .blockmap)
+[ ] Open latest.yml URL in browser to confirm it loads
+[ ] Open installed app → Settings → Check for updates (or wait for auto-check)

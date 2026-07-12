@@ -1,0 +1,57 @@
+{
+  "name": "olitechdesktop",
+  "version": "1.1.0",
+  "description": "OLITECHHUB desktop POS for retail operations — by Olitech Hub",
+  "author": {
+    "name": "Olitech Hub",
+    "email": "muhirehillary720@gmail.com"
+  },
+  "homepage": "https://olitechhub.com",
+  "license": "SEE LICENSE IN build/license.txt",
+  "main": "./out/main/index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "dist": "npm run build && electron-builder --win nsis",
+    "dist:dir": "npm run build && electron-builder --win dir",
+    "release": "npm run dist",
+    "release:build": "powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1",
+    "release:github": "powershell -ExecutionPolicy Bypass -File scripts/release-github.ps1",
+    "release:netlify": "powershell -ExecutionPolicy Bypass -File scripts/release-netlify.ps1",
+    "publish:github:manual": "powershell -ExecutionPolicy Bypass -File scripts/publish-github-manual.ps1",
+    "publish:github:auto": "powershell -ExecutionPolicy Bypass -File scripts/publish-github-auto.ps1",
+    "publish:netlify": "powershell -ExecutionPolicy Bypass -File scripts/publish-netlify.ps1",
+    "sync:updates": "powershell -ExecutionPolicy Bypass -File scripts/sync-update-config.ps1",
+    "pack": "npm run dist"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@tanstack/react-query": "^5.59.0",
+    "axios": "^1.7.7",
+    "electron-updater": "^6.8.9",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.28.0",
+    "socket.io-client": "^4.8.3",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.3",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "vite": "^5.4.10"
+  },
+  "allowScripts": {
+    "electron@33.4.11": true,
+    "esbuild@0.21.5": true
+  }
+}

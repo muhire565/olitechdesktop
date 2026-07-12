@@ -1,0 +1,133 @@
+OLITECHHUB — Set up auto-updates (GitHub Releases OR Netlify)
+=============================================================
+
+Pick ONE hosting method. Both are configured in this project.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION A — GitHub Releases (recommended, free)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1 — Create a GitHub account & repository
+---------------------------------------------
+1. Go to https://github.com and sign in (or create an account).
+2. Click New repository.
+3. Name it: olitechdesktop
+4. Keep it Private or Public (both work).
+5. Do NOT add README if you already have local code.
+6. Copy your GitHub username (e.g. hillary-dev).
+
+
+STEP 2 — Edit updates.host.json (one time)
+------------------------------------------
+Open updates.host.json and replace:
+
+  "githubOwner": "YOUR_GITHUB_USERNAME"   →   your real username
+  "githubRepo": "olitechdesktop"          →   your repo name
+
+Then run:
+
+  npm run sync:updates
+
+
+STEP 3 — Push your code to GitHub (one time)
+--------------------------------------------
+In PowerShell, from the project folder:
+
+  git init
+  git add .
+  git commit -m "Initial OLITECHHUB desktop app"
+  git branch -M main
+  git remote add origin https://github.com/YOUR_USERNAME/olitechdesktop.git
+  git push -u origin main
+
+
+STEP 4 — Build & publish a release
+----------------------------------
+
+  npm run release:github
+  npm run publish:github:manual
+
+The manual script opens GitHub in your browser. Then:
+  - Tag: v1.1.0  (must match package.json version)
+  - Upload ALL files from release/ folder:
+      latest.yml
+      OLITECHHUB-Setup-1.1.0.exe
+      OLITECHHUB-Setup-1.1.0.exe.blockmap
+  - Click Publish release
+
+Installed apps will find the update automatically.
+
+
+AUTO-PUBLISH (optional, after you create a GitHub token)
+--------------------------------------------------------
+1. https://github.com/settings/tokens → Generate token (repo scope).
+2. In PowerShell:
+
+     $env:GH_TOKEN = "ghp_your_token"
+     npm run publish:github:auto
+
+This builds and uploads to GitHub in one step.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION B — Netlify (fixed URL, good if you skip GitHub)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1 — Create a Netlify account
+-----------------------------------
+1. Go to https://app.netlify.com and sign up (free).
+2. No need to connect Git for this workflow — we deploy manually.
+
+
+STEP 2 — Edit updates.host.json
+-------------------------------
+  "netlifySiteUrl": "https://YOUR-SITE-NAME.netlify.app"
+
+Use the URL Netlify gives you after creating a site (Step 3).
+
+Then run:
+
+  npm run sync:updates
+
+
+STEP 3 — Create an empty Netlify site
+-------------------------------------
+1. In Netlify dashboard → Add new site → Deploy manually.
+2. Or run once:  npm run publish:netlify
+   (CLI will prompt you to log in and create/link a site.)
+3. Note your site URL, e.g. https://olitechhub-updates.netlify.app
+4. Put that URL in updates.host.json and run sync:updates again.
+5. Rebuild so the installer points to the correct URL:
+
+     npm run release:netlify
+
+
+STEP 4 — Every new version
+--------------------------
+  npm run release:netlify
+  npm run publish:netlify
+
+Verify in browser:
+  https://YOUR-SITE.netlify.app/latest.yml
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Which should you pick?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GitHub Releases  → Best if you use Git anyway; version history built-in.
+Netlify          → Best if you want a simple drag-and-drop style deploy.
+
+IMPORTANT: Users who already installed v1.0.0 built with the OLD update URL
+(releases.olitechhub.com) need a NEW installer built with GitHub or Netlify
+config (v1.1.0). After that one install, all future updates are automatic.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Every future release (either option)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Bump version in package.json (1.1.0 → 1.2.0)
+2. Build + publish (GitHub or Netlify commands above)
+3. Users see the update banner within minutes
