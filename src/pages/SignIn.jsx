@@ -12,7 +12,6 @@ import {
   ShieldAlert,
   User,
   Lock,
-  Store,
   ChevronRight,
   Loader2,
   KeyRound,
@@ -23,8 +22,9 @@ import { login, loginPin } from "../api/auth.api";
 import { useAuthStore } from "../store/authStore";
 import { routeForRole, normalizeRole } from "../utils/roles";
 import { getRecentStaff, rememberStaff } from "../utils/recentStaff";
-import PinKeypad from "../components/auth/PinKeypad";
+import PinKeypad, { LuxurySecureFooter } from "../components/auth/PinKeypad";
 import LoginHero from "../components/auth/LoginHero";
+import BrandLogo, { brandLogoSrc } from "../components/shared/BrandLogo";
 
 const schema = z.object({
   username: z.string().min(2, "Username is required"),
@@ -34,11 +34,36 @@ const schema = z.object({
 const BRAND_GREEN = "#16a34a";
 const BRAND_GREEN_DARK = "#15803d";
 
-function LoginModeToggle({ mode, onChange }) {
+function LoginModeToggle({ mode, onChange, luxury = false }) {
   const modes = [
     { id: "pin", label: "PIN", icon: Hash },
     { id: "password", label: "Password", icon: KeyRound },
   ];
+
+  if (luxury) {
+    return (
+      <div className="luxury-toggle" role="tablist" aria-label="Sign in method">
+        <div className={`luxury-toggle__slider${mode === "password" ? " is-password" : ""}`}>
+          <span className="luxury-toggle__knob" aria-hidden />
+        </div>
+        {modes.map(({ id, label }) => {
+          const active = mode === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => onChange(id)}
+              className={`luxury-toggle__btn${active ? " is-active" : ""}`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -92,8 +117,21 @@ function LoginModeToggle({ mode, onChange }) {
   );
 }
 
-function BlockedAlert({ isBlocked }) {
+function BlockedAlert({ isBlocked, luxury = false }) {
   if (!isBlocked) return null;
+  if (luxury) {
+    return (
+      <div className="luxury-blocked animate-shake">
+        <ShieldAlert size={18} color="#fca5a5" />
+        <div>
+          <p style={{ margin: 0, fontSize: "13px", fontWeight: 800, color: "#fecaca" }}>Access Restricted</p>
+          <p style={{ margin: 0, fontSize: "12px", fontWeight: 600, color: "#fca5a5" }}>
+            Contact OlitechHub admin for assistance
+          </p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="animate-shake" style={{
       display: "flex", alignItems: "center", gap: "12px",
@@ -120,8 +158,41 @@ function BlockedAlert({ isBlocked }) {
   );
 }
 
-function RecentStaffRow({ staff, selectedId, onSelect }) {
+function RecentStaffRow({ staff, selectedId, onSelect, luxury = false }) {
   if (!staff.length) return null;
+
+  if (luxury) {
+    return (
+      <div style={{ marginBottom: "4px" }}>
+        <p className="luxury-staff-label">Frequently on this terminal</p>
+        <div className="luxury-staff-row">
+          {staff.map((person) => {
+            const selected = selectedId === person.id;
+            return (
+              <button
+                key={person.id}
+                type="button"
+                onClick={() => onSelect(selected ? null : person.id)}
+                className="luxury-staff-btn"
+                aria-pressed={selected}
+              >
+                <div className={`luxury-staff-coin${selected ? " luxury-staff-coin--gold" : " luxury-staff-coin--silver"}`}>
+                  {selected && brandLogoSrc ? (
+                    <img src={brandLogoSrc} alt="" className="luxury-staff-coin__logo" />
+                  ) : (
+                    person.initials
+                  )}
+                </div>
+                <span className={`luxury-staff-name${selected ? " luxury-staff-name--active" : " luxury-staff-name--idle"}`}>
+                  {person.name.split(" ")[0]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ marginBottom: "18px" }}>
@@ -183,8 +254,86 @@ function RecentStaffRow({ staff, selectedId, onSelect }) {
 
 function PasswordLoginForm({
   register, errors, showPassword, setShowPassword,
-  isPending, isBlocked, rememberMe, setRememberMe,
+  isPending, isBlocked, rememberMe, setRememberMe, luxury = false,
 }) {
+  if (luxury) {
+    return (
+      <div className="luxury-password-form">
+        <BlockedAlert isBlocked={isBlocked} luxury />
+
+        <div className="luxury-password-card">
+          <div className="luxury-field">
+            <label className="luxury-field__label" htmlFor="luxury-username">Username</label>
+            <div className="luxury-field__input-wrap">
+              <span className="luxury-field__icon" aria-hidden><User size={18} strokeWidth={2.4} /></span>
+              <input
+                id="luxury-username"
+                className="luxury-field__input"
+                placeholder="e.g. admin_user"
+                autoComplete="username"
+                {...register("username")}
+              />
+            </div>
+            {errors.username && (
+              <p className="luxury-field__error">{errors.username.message}</p>
+            )}
+          </div>
+
+          <div className="luxury-field">
+            <label className="luxury-field__label" htmlFor="luxury-password">Password</label>
+            <div className="luxury-field__input-wrap">
+              <span className="luxury-field__icon" aria-hidden><Lock size={18} strokeWidth={2.4} /></span>
+              <input
+                id="luxury-password"
+                className="luxury-field__input luxury-field__input--password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                {...register("password")}
+              />
+              <button
+                type="button"
+                className="luxury-field__toggle"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="luxury-field__error">{errors.password.message}</p>
+            )}
+          </div>
+
+          <label className="luxury-remember">
+            <input
+              type="checkbox"
+              className="luxury-remember__input"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <span className="luxury-remember__box" aria-hidden />
+            <span className="luxury-remember__text">Remember me on this device</span>
+          </label>
+
+          <button type="submit" className="luxury-submit-btn" disabled={isPending}>
+            {isPending ? (
+              <>
+                <Loader2 size={20} className="is-spinning" />
+                <span>Signing in…</span>
+              </>
+            ) : (
+              <>
+                <span>Sign In</span>
+                <ChevronRight size={18} strokeWidth={2.5} />
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="login-mode-enter" style={{ display: "flex", flexDirection: "column", gap: "18px", width: "100%" }}>
       <BlockedAlert isBlocked={isBlocked} />
@@ -301,38 +450,48 @@ function PasswordLoginForm({
 
 function PinLoginPanel({
   pin, setPin, onSubmit, isPending, isSuccess, isBlocked, errorMessage,
-  recentStaff, selectedStaffId, onSelectStaff,
+  recentStaff, selectedStaffId, onSelectStaff, luxury = false,
 }) {
   const greeting = selectedStaffId
     ? recentStaff.find((s) => s.id === selectedStaffId)?.name?.split(" ")[0]
     : recentStaff[0]?.name?.split(" ")[0];
 
   return (
-    <div className="login-mode-enter" style={{ display: "flex", flexDirection: "column", gap: "14px", width: "100%" }}>
-      <BlockedAlert isBlocked={isBlocked} />
+    <div className="login-mode-enter luxury-pin-panel">
+      <BlockedAlert isBlocked={isBlocked} luxury={luxury} />
 
-      <RecentStaffRow
-        staff={recentStaff}
-        selectedId={selectedStaffId}
-        onSelect={onSelectStaff}
-      />
+      {!luxury && (
+        <RecentStaffRow
+          staff={recentStaff}
+          selectedId={selectedStaffId}
+          onSelect={onSelectStaff}
+        />
+      )}
 
-      <p style={{
-        margin: 0, textAlign: "center", fontSize: "14px",
-        fontWeight: 700, color: "#334155", lineHeight: 1.5,
-      }}>
-        {greeting ? (
-          <>Welcome back, <span style={{ color: BRAND_GREEN }}>{greeting}</span></>
-        ) : (
-          "Enter your staff PIN for quick access"
-        )}
-      </p>
-      <p style={{
-        margin: "-6px 0 0", textAlign: "center", fontSize: "12px",
-        fontWeight: 600, color: "#94a3b8",
-      }}>
-        4–6 digits · auto-submits when complete
-      </p>
+      {luxury ? (
+        <p className="luxury-greeting-hint luxury-greeting-hint--solo">
+          4–6 digits · auto-submits when complete
+        </p>
+      ) : (
+        <>
+          <p style={{
+            margin: 0, textAlign: "center", fontSize: "14px",
+            fontWeight: 700, color: "#334155", lineHeight: 1.5,
+          }}>
+            {greeting ? (
+              <>Welcome back, <span style={{ color: BRAND_GREEN }}>{greeting}</span></>
+            ) : (
+              "Enter your staff PIN for quick access"
+            )}
+          </p>
+          <p style={{
+            margin: "-6px 0 0", textAlign: "center", fontSize: "12px",
+            fontWeight: 600, color: "#94a3b8",
+          }}>
+            4–6 digits · auto-submits when complete
+          </p>
+        </>
+      )}
 
       <PinKeypad
         value={pin}
@@ -344,24 +503,21 @@ function PinLoginPanel({
         hasError={!!errorMessage}
         maxLength={6}
         minLength={4}
+        theme={luxury ? "luxury" : "default"}
       />
 
       {errorMessage && (
-        <p
-          role="alert"
-          aria-live="polite"
-          style={{
-            margin: 0, textAlign: "center", fontSize: "12.5px",
-            fontWeight: 700, color: "#dc2626",
-            padding: "10px 14px", borderRadius: "10px",
-            background: "#fef2f2", border: "1px solid #fecaca",
-          }}
-        >
+        <p role="alert" aria-live="polite" className={luxury ? "luxury-error" : undefined} style={luxury ? undefined : {
+          margin: 0, textAlign: "center", fontSize: "12.5px",
+          fontWeight: 700, color: "#dc2626",
+          padding: "10px 14px", borderRadius: "10px",
+          background: "#fef2f2", border: "1px solid #fecaca",
+        }}>
           {errorMessage}
         </p>
       )}
 
-      <TrustDivider />
+      {!luxury && <TrustDivider />}
     </div>
   );
 }
@@ -405,18 +561,29 @@ const submitButtonStyle = (isPending) => ({
   opacity: isPending ? 0.75 : 1,
 });
 
-function SignInHeader({ subtitle }) {
+function SignInHeader({ subtitle, luxury = false }) {
+  if (luxury) {
+    return (
+      <>
+        <h1 className="luxury-header__title">Welcome Back</h1>
+        <p className="luxury-header__sub">{subtitle}</p>
+      </>
+    );
+  }
+
   return (
     <>
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "center",
         width: "52px", height: "52px", borderRadius: "14px",
-        background: "linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%)",
+        background: "linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%)",
         marginBottom: "22px",
-        boxShadow: "0 4px 16px rgba(22,163,74,0.12)",
-        border: "1px solid rgba(22,163,74,0.12)",
+        boxShadow: "0 4px 16px rgba(15,23,42,0.08)",
+        border: "1px solid rgba(15,23,42,0.06)",
+        overflow: "hidden",
+        padding: "6px",
       }}>
-        <Store size={28} color={BRAND_GREEN} strokeWidth={2.5} />
+        <BrandLogo size={40} />
       </div>
       <h1 style={{
         margin: "0 0 8px",
@@ -525,94 +692,93 @@ export default function SignIn() {
       : "Enter your credentials to access the supermarket portal.";
 
   return (
-    <div style={{ display: "flex", width: "100vw", height: "100vh", overflow: "hidden" }}>
-      <div style={{
-        position: "relative", width: "48%", height: "100%", flexShrink: 0,
-      }}>
-        <LoginHero />
-      </div>
+    <div className="signin-viewport">
+      <div className="signin-stage">
+        <div className="signin-unified-frame">
+          <span className="signin-unified-frame__bracket signin-unified-frame__bracket--tl" aria-hidden />
+          <span className="signin-unified-frame__bracket signin-unified-frame__bracket--tr" aria-hidden />
+          <span className="signin-unified-frame__bracket signin-unified-frame__bracket--bl" aria-hidden />
+          <span className="signin-unified-frame__bracket signin-unified-frame__bracket--br" aria-hidden />
+          <div className="signin-unified-frame__body">
+            <div className="signin-shell">
+              <div className="signin-hero-panel">
+                <LoginHero />
+              </div>
 
-      <div style={{
-        position: "relative",
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-        overflowY: "auto",
-        background: "#ffffff",
-        padding: "48px 40px",
-        boxSizing: "border-box",
-      }}>
-        <div
-          className="bg-dot-grid"
-          aria-hidden
-          style={{
-            position: "absolute", inset: 0, opacity: 0.35,
-            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        <div style={{ width: "100%", maxWidth: "420px", position: "relative", zIndex: 1 }} className="animate-page-enter">
-          <div style={{ marginBottom: "30px" }}>
-            <SignInHeader subtitle={subtitle} />
-          </div>
-
-          <LoginModeToggle
-            mode={loginMode}
-            onChange={(mode) => {
-              setLoginMode(mode);
-              setPinError("");
-              setPin("");
-              setPinSuccess(false);
-            }}
-          />
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={loginMode}
-              initial={{ opacity: 0, x: loginMode === "pin" ? -14 : 14 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: loginMode === "pin" ? 14 : -14 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-            >
-              {loginMode === "pin" ? (
-                <PinLoginPanel
-                  pin={pin}
-                  setPin={(v) => { setPin(v); if (pinError) setPinError(""); }}
-                  onSubmit={submitPin}
-                  isPending={pinMutation.isPending}
-                  isSuccess={pinSuccess}
-                  isBlocked={false}
-                  errorMessage={pinError}
-                  recentStaff={recentStaff}
-                  selectedStaffId={selectedStaffId}
-                  onSelectStaff={setSelectedStaffId}
-                />
-              ) : (
-                <form onSubmit={handleSubmit((v) => passwordMutation.mutate(v))}>
-                  <PasswordLoginForm
-                    register={register}
-                    errors={errors}
-                    showPassword={showPassword}
-                    setShowPassword={setShowPassword}
-                    isPending={passwordMutation.isPending}
-                    isBlocked={false}
-                    rememberMe={rememberMe}
-                    setRememberMe={setRememberMe}
-                  />
-                </form>
-              )}
-            </motion.div>
-          </AnimatePresence>
-
-          <div style={{ textAlign: "center", marginTop: "28px" }}>
-            <p style={{ margin: 0, fontSize: "11px", fontWeight: 500, color: "#cbd5e1" }}>
-              © 2026 OlitechHub. Staff &amp; Administration Portal.
-            </p>
+              <div className="luxury-pin-screen">
+                <div className="luxury-pin-screen__inner animate-page-enter">
+                  <div className="luxury-glass-wrap">
+                    <div className="luxury-glass-panel">
+                      <div className="luxury-pin-body">
+                        <SignInHeader subtitle={subtitle} luxury />
+                        <LoginModeToggle
+                          mode={loginMode}
+                          luxury
+                          onChange={(mode) => {
+                            setLoginMode(mode);
+                            setPinError("");
+                            setPin("");
+                            setPinSuccess(false);
+                          }}
+                        />
+                        <div className="luxury-auth-stage">
+                          <AnimatePresence mode="wait" initial={false}>
+                            {loginMode === "pin" ? (
+                              <motion.div
+                                key="pin"
+                                className="luxury-auth-panel"
+                                initial={{ opacity: 0, x: -36 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -36 }}
+                                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                              >
+                                <PinLoginPanel
+                                  luxury
+                                  pin={pin}
+                                  setPin={(v) => { setPin(v); if (pinError) setPinError(""); }}
+                                  onSubmit={submitPin}
+                                  isPending={pinMutation.isPending}
+                                  isSuccess={pinSuccess}
+                                  isBlocked={false}
+                                  errorMessage={pinError}
+                                  recentStaff={recentStaff}
+                                  selectedStaffId={selectedStaffId}
+                                  onSelectStaff={setSelectedStaffId}
+                                />
+                              </motion.div>
+                            ) : (
+                              <motion.div
+                                key="password"
+                                className="luxury-auth-panel"
+                                initial={{ opacity: 0, x: 36 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 36 }}
+                                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                              >
+                                <form onSubmit={handleSubmit((v) => passwordMutation.mutate(v))}>
+                                  <PasswordLoginForm
+                                    luxury
+                                    register={register}
+                                    errors={errors}
+                                    showPassword={showPassword}
+                                    setShowPassword={setShowPassword}
+                                    isPending={passwordMutation.isPending}
+                                    isBlocked={false}
+                                    rememberMe={rememberMe}
+                                    setRememberMe={setRememberMe}
+                                  />
+                                </form>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                      <LuxurySecureFooter />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

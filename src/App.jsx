@@ -32,6 +32,7 @@ import ComingSoon from "./pages/ComingSoon";
 import AppShell from "./components/layout/AppShell";
 import RoleGuard from "./components/shared/RoleGuard";
 import UpdateBanner from "./components/UpdateBanner";
+import TitleBar from "./components/layout/TitleBar";
 
 function ProtectedRoute({ children }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -55,8 +56,11 @@ const PLACEHOLDER_ROUTES = ["/savings"];
 export default function App() {
   return (
     <HashRouter>
-      <UpdateBanner />
-      <Routes>
+      <div className="app-frame">
+        <TitleBar />
+        <div className="app-frame__content">
+          <UpdateBanner />
+          <Routes>
         <Route
           path="/login"
           element={
@@ -303,7 +307,9 @@ export default function App() {
           ))}
         </Route>
         <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+          </Routes>
+        </div>
+      </div>
     </HashRouter>
   );
 }

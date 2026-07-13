@@ -20,9 +20,9 @@ try {
         ForEach-Object { Write-Host "  $($_.Name)" }
 
     Write-Host ""
-    Write-Host "Next — publish to GitHub:" -ForegroundColor Yellow
+    Write-Host "Next - publish to GitHub:" -ForegroundColor Yellow
     Write-Host "  Manual:  npm run publish:github:manual"
-    Write-Host "  Auto:    set GH_TOKEN=your_token && npm run publish:github:auto"
+    Write-Host '  Auto:    $env:GH_TOKEN = "your_token"; npm run publish:github:auto'
 }
 finally {
     Pop-Location

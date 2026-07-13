@@ -254,13 +254,6 @@ export default function Dashboard() {
             variant="warning"
             onClick={() => navigate("/credits")}
           />
-          <StatCard
-            label="Cash Savings"
-            value={formatRWF(summary.savings?.total || 0)}
-            icon={Archive}
-            variant="revenue"
-            onClick={() => navigate("/savings")}
-          />
         </div>
 
         <div className="dash__grid dash__grid--2">

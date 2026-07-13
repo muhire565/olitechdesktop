@@ -31,7 +31,7 @@ export default function StatCard({
       <div className="stat-card__top">
         <div className="stat-card__copy">
           <p className="stat-card__label">{label}</p>
-          <p className="stat-card__value">{value ?? "—"}</p>
+          <p className="card-value">{value ?? "—"}</p>
           {subLabel ? <p className="stat-card__sub">{subLabel}</p> : null}
         </div>
         {Icon ? (

@@ -1,6 +1,6 @@
 {
   "name": "olitechdesktop",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "OLITECHHUB desktop POS for retail operations — by Olitech Hub",
   "author": {
     "name": "Olitech Hub",
@@ -11,6 +11,10 @@
   "main": "./out/main/index.js",
   "type": "module",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muhire565/olitechdesktop.git"
+  },
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
@@ -44,10 +48,12 @@
     "zustand": "^5.0.1"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.2",
     "@vitejs/plugin-react": "^4.3.3",
     "electron": "^33.2.0",
     "electron-builder": "^25.1.8",
     "electron-vite": "^2.3.0",
+    "tailwindcss": "^4.3.2",
     "vite": "^5.4.10"
   },
   "allowScripts": {

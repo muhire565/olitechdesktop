@@ -12,7 +12,6 @@ import {
   Settings,
   FileText,
   ClipboardList,
-  Store,
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
@@ -24,6 +23,7 @@ import {
 import toast from "react-hot-toast";
 import { useAuthStore } from "../../store/authStore";
 import { logout as apiLogout } from "../../api/auth.api";
+import BrandLogo from "../shared/BrandLogo";
 
 const GROUPS = [
   {
@@ -94,6 +94,8 @@ export default function Sidebar({
   const displayName =
     user?.full_name || user?.username || user?.email?.split("@")[0] || "User";
 
+  const roleLabel = String(role || "user").replace(/_/g, " ").toUpperCase();
+
   const handleLogout = async () => {
     try {
       await apiLogout();
@@ -118,13 +120,13 @@ export default function Sidebar({
       aria-hidden={overlay ? !overlayOpen : undefined}
     >
       <div className="app-sidebar__brand">
-        <div className="app-sidebar__brand-icon">
-          <Store size={20} strokeWidth={2.5} />
+        <div className="app-sidebar__brand-logo">
+          <BrandLogo size={28} />
         </div>
         {showLabels && (
           <div className="app-sidebar__brand-text">
-            <p className="app-sidebar__brand-title">OlitechHub</p>
-            <p className="app-sidebar__brand-sub">Smart POS</p>
+            <p className="app-sidebar__brand-title">OLITECHHUB</p>
+            <p className="app-sidebar__brand-sub">SMART POS</p>
           </div>
         )}
         {overlay && (
@@ -134,18 +136,23 @@ export default function Sidebar({
             onClick={onOverlayClose}
             aria-label="Close navigation"
           >
-            <X size={18} />
+            <X size={18} strokeWidth={2} />
           </button>
         )}
       </div>
 
       <nav className="app-sidebar__nav">
-        {GROUPS.map((group) => {
+        {GROUPS.map((group, groupIndex) => {
           const visible = group.items.filter((i) => i.roles.includes(role));
           if (!visible.length) return null;
           return (
-            <div key={group.id} className="app-sidebar__group">
-              {showLabels && <p className="app-sidebar__group-label">{group.label}</p>}
+            <div
+              key={group.id}
+              className={`app-sidebar__group${groupIndex > 0 ? " is-spaced" : ""}`}
+            >
+              {showLabels && (
+                <p className="app-sidebar__group-label">{group.label}</p>
+              )}
               <div className="app-sidebar__links">
                 {visible.map((item) => {
                   const Icon = item.icon;
@@ -161,7 +168,7 @@ export default function Sidebar({
                         `app-sidebar__link${isActive ? " is-active" : ""}`
                       }
                     >
-                      <Icon size={18} strokeWidth={2.25} />
+                      <Icon size={18} strokeWidth={2} />
                       {showLabels && <span>{item.label}</span>}
                     </NavLink>
                   );
@@ -173,41 +180,40 @@ export default function Sidebar({
       </nav>
 
       <div className="app-sidebar__footer">
-        <div className={`app-sidebar__user${!showLabels ? " is-stacked" : ""}`}>
-          <div className="app-sidebar__avatar">{initials}</div>
-          {showLabels && (
-            <div className="app-sidebar__user-meta">
-              <p className="app-sidebar__user-name">{displayName}</p>
-              <span className="app-sidebar__role">{role}</span>
-            </div>
-          )}
-          {showLabels && (
+        <div className={`app-sidebar__profile${!showLabels ? " is-collapsed" : ""}`}>
+          <div className="app-sidebar__profile-row">
+            <div className="app-sidebar__avatar">{initials}</div>
+            {showLabels && (
+              <div className="app-sidebar__user-meta">
+                <p className="app-sidebar__user-name">{displayName}</p>
+                <span className="app-sidebar__role-badge">{roleLabel}</span>
+              </div>
+            )}
             <button
               type="button"
-              className="app-sidebar__icon-btn"
+              className="app-sidebar__logout"
               onClick={handleLogout}
               title="Logout"
             >
-              <LogOut size={16} />
+              <LogOut size={18} strokeWidth={2} />
             </button>
-          )}
+          </div>
         </div>
 
-        {!showLabels && (
+        {!overlay && (
           <button
             type="button"
-            className="app-sidebar__icon-btn"
-            onClick={handleLogout}
-            title="Logout"
+            className="app-sidebar__collapse"
+            onClick={onToggleCollapse}
           >
-            <LogOut size={16} />
-          </button>
-        )}
-
-        {!overlay && (
-          <button type="button" className="app-sidebar__collapse" onClick={onToggleCollapse}>
-            {collapsed ? <PanelLeftOpen size={14} /> : <PanelLeftClose size={14} />}
-            {!collapsed && <span>Collapse</span>}
+            {collapsed ? (
+              <PanelLeftOpen size={14} strokeWidth={2} />
+            ) : (
+              <>
+                <PanelLeftClose size={14} strokeWidth={2} />
+                <span>COLLAPSE</span>
+              </>
+            )}
           </button>
         )}
       </div>

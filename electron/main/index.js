@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+import { app, BrowserWindow, shell, ipcMain, nativeImage, Menu } from "electron";
 import { join } from "path";
 import { existsSync } from "fs";
 import { fileURLToPath } from "url";
@@ -11,6 +11,25 @@ const isDev = !app.isPackaged;
 
 /** @type {BrowserWindow | null} */
 let mainWindow = null;
+
+function getProjectRoot() {
+  return join(__dirname, "..", "..");
+}
+
+function resolveWindowIcon() {
+  const root = getProjectRoot();
+  const candidates = [
+    join(root, "src", "assets", "branding", "logo.png"),
+    join(root, "build", "icon.png"),
+  ];
+  for (const p of candidates) {
+    if (existsSync(p)) {
+      const image = nativeImage.createFromPath(p);
+      if (!image.isEmpty()) return image;
+    }
+  }
+  return undefined;
+}
 
 function resolvePreloadPath() {
   const mjs = join(__dirname, "../preload/index.mjs");
@@ -31,6 +50,12 @@ function setupAutoUpdater() {
   autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = true;
   autoUpdater.allowDowngrade = false;
+
+  const runUpdateCheck = () => {
+    autoUpdater.checkForUpdates().catch((err) => {
+      sendUpdater("updater:error", { message: err?.message || String(err) });
+    });
+  };
 
   autoUpdater.on("checking-for-update", () => {
     sendUpdater("updater:status", { status: "checking" });
@@ -83,26 +108,60 @@ function setupAutoUpdater() {
     return { ok: true };
   });
 
-  // First check shortly after launch, then every 4 hours
-  setTimeout(() => {
-    autoUpdater.checkForUpdates().catch(() => {});
-  }, 8_000);
+  // Check after the UI loads, then again shortly after, then every 4 hours
+  const scheduleChecks = () => {
+    setTimeout(runUpdateCheck, 1_500);
+    setTimeout(runUpdateCheck, 4_000);
+  };
 
-  setInterval(() => {
-    autoUpdater.checkForUpdates().catch(() => {});
-  }, 4 * 60 * 60 * 1000);
+  if (mainWindow?.webContents.isLoading()) {
+    mainWindow.webContents.once("did-finish-load", scheduleChecks);
+  } else {
+    scheduleChecks();
+  }
+
+  setInterval(runUpdateCheck, 4 * 60 * 60 * 1000);
+}
+
+function sendWindowState(maximized) {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send("window:maximized", { maximized });
+  }
+}
+
+function setupWindowControls() {
+  ipcMain.handle("window:minimize", () => {
+    mainWindow?.minimize();
+  });
+
+  ipcMain.handle("window:maximize", () => {
+    if (!mainWindow) return { maximized: false };
+    if (mainWindow.isMaximized()) mainWindow.unmaximize();
+    else mainWindow.maximize();
+    return { maximized: mainWindow.isMaximized() };
+  });
+
+  ipcMain.handle("window:close", () => {
+    mainWindow?.close();
+  });
+
+  ipcMain.handle("window:isMaximized", () => mainWindow?.isMaximized() ?? false);
 }
 
 function createWindow() {
+  const windowIcon = resolveWindowIcon();
+
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
     minWidth: 980,
     minHeight: 640,
     show: false,
+    frame: false,
     autoHideMenuBar: true,
-    title: "OLITECHHUB",
-    backgroundColor: "#0b6e6a",
+    title: "OlitechHub — Desktop POS",
+    backgroundColor: "#0a0c10",
+    icon: windowIcon,
     webPreferences: {
       preload: resolvePreloadPath(),
       sandbox: false,
@@ -111,12 +170,18 @@ function createWindow() {
     },
   });
 
+  mainWindow.setMenu(null);
+  mainWindow.removeMenu();
+
   mainWindow.on("ready-to-show", () => {
     mainWindow?.show();
     if (process.platform === "win32") {
       mainWindow?.maximize();
     }
   });
+
+  mainWindow.on("maximize", () => sendWindowState(true));
+  mainWindow.on("unmaximize", () => sendWindowState(false));
 
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -135,7 +200,10 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
+
   ipcMain.handle("app:getVersion", () => app.getVersion());
+  setupWindowControls();
 
   createWindow();
   setupAutoUpdater();

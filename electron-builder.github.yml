@@ -20,7 +20,7 @@ asar: true
 # Edit owner/repo below (must match updates.host.json and package.json repository).
 publish:
   provider: github
-  owner: YOUR_GITHUB_USERNAME
+  owner: muhire565
   repo: olitechdesktop
   releaseType: release
   vPrefixedTagName: true

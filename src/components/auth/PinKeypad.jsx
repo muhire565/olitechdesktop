@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Delete, Loader2 } from "lucide-react";
+import BrandLogo, { brandLogoSrc } from "../shared/BrandLogo";
 
 const PIN_LENGTH = 6;
 const MIN_PIN = 4;
@@ -10,7 +11,28 @@ function hapticTap() {
   }
 }
 
-function PinDots({ value, maxLength, isPending, isSuccess, hasError }) {
+function PinDots({ value, maxLength, isPending, isSuccess, hasError, theme = "default" }) {
+  if (theme === "luxury") {
+    return (
+      <div
+        className={hasError ? "animate-shake luxury-pin-orbs" : "luxury-pin-orbs"}
+        aria-label={`PIN entry, ${value.length} of ${maxLength} digits`}
+      >
+        {Array.from({ length: maxLength }).map((_, i) => {
+          const filled = i < value.length;
+          const isActive = value.length > 0 && i === value.length && !isPending && !isSuccess && !hasError;
+          let cls = "luxury-pin-orb";
+          if (hasError && filled) cls += " is-error";
+          else if (isSuccess && filled) cls += " is-success";
+          else if (filled) cls += " is-filled";
+          else if (isActive) cls += " is-active";
+          else cls += " is-empty";
+          return <div key={i} className={cls} />;
+        })}
+      </div>
+    );
+  }
+
   return (
     <div
       className={hasError ? "animate-shake" : undefined}
@@ -108,22 +130,47 @@ function KeyButton({
   variant = "digit",
   keyIndex,
   highlighted,
+  theme = "default",
 }) {
   const [ripples, setRipples] = useState([]);
+  const isLuxury = theme === "luxury";
+  const isAction = variant === "action";
+  const isClear = variant === "clear";
 
   const handleClick = (e) => {
     if (disabled) return;
     hapticTap();
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const id = Date.now();
-    setRipples((r) => [...r, { id, x, y }]);
-    setTimeout(() => setRipples((r) => r.filter((rip) => rip.id !== id)), 450);
+    if (!isLuxury) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const id = Date.now();
+      setRipples((r) => [...r, { id, x, y }]);
+      setTimeout(() => setRipples((r) => r.filter((rip) => rip.id !== id)), 450);
+    }
     onClick?.();
   };
 
-  const isAction = variant === "action";
+  if (isLuxury) {
+    const faceClass = [
+      "luxury-key__face",
+      isClear ? "luxury-key__face--clear" : "",
+      isAction ? "luxury-key__face--action" : "",
+    ].filter(Boolean).join(" ");
+
+    return (
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={handleClick}
+        aria-label={ariaLabel}
+        className="luxury-key pin-key-enter"
+        style={{ "--key-i": keyIndex }}
+      >
+        <span className={faceClass}>{children}</span>
+      </button>
+    );
+  }
 
   return (
     <button
@@ -170,9 +217,11 @@ export default function PinKeypad({
   hasError = false,
   maxLength = PIN_LENGTH,
   minLength = MIN_PIN,
+  theme = "default",
 }) {
   const completedRef = useRef(false);
   const [highlightedKey, setHighlightedKey] = useState(null);
+  const isLuxury = theme === "luxury";
 
   useEffect(() => {
     completedRef.current = false;
@@ -244,65 +293,50 @@ export default function PinKeypad({
   const auraOpacity = 0.25 + (value.length / maxLength) * 0.45;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "18px", width: "100%" }}>
+    <div className={isLuxury ? "luxury-pin-keypad" : undefined} style={{ display: "flex", flexDirection: "column", gap: isLuxury ? "clamp(4px, 0.7vh, 8px)" : "18px", width: "100%", minHeight: 0, flex: isLuxury ? 1 : undefined }}>
       <div style={{ position: "relative" }}>
-        <div
-          className="pin-aura"
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: "-20px -12px",
-            borderRadius: "24px",
-            background: hasError
-              ? `radial-gradient(ellipse at center, rgba(220,38,38,${auraOpacity * 0.5}) 0%, transparent 70%)`
-              : `radial-gradient(ellipse at center, rgba(22,163,74,${auraOpacity}) 0%, transparent 70%)`,
-            pointerEvents: "none",
-            transition: "background 0.3s ease",
-          }}
-        />
+        {!isLuxury && (
+          <div
+            className="pin-aura"
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: "-20px -12px",
+              borderRadius: "24px",
+              background: hasError
+                ? `radial-gradient(ellipse at center, rgba(220,38,38,${auraOpacity * 0.5}) 0%, transparent 70%)`
+                : `radial-gradient(ellipse at center, rgba(22,163,74,${auraOpacity}) 0%, transparent 70%)`,
+              pointerEvents: "none",
+              transition: "background 0.3s ease",
+            }}
+          />
+        )}
         <PinDots
           value={value}
           maxLength={maxLength}
           isPending={isPending}
           isSuccess={isSuccess}
           hasError={hasError}
+          theme={theme}
         />
       </div>
 
-      <div
-        style={{
-          position: "relative",
-          padding: "16px",
-          borderRadius: "22px",
-          background: "linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.98) 100%)",
-          border: "1.5px solid rgba(226,232,240,0.9)",
-          boxShadow: "0 8px 32px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.9)",
-          backdropFilter: "blur(8px)",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "10px",
-            maxWidth: "320px",
-            margin: "0 auto",
-            width: "100%",
-          }}
-        >
+      {isLuxury ? (
+        <div className="luxury-keypad-wrap">
+          <div className="luxury-keypad">
           {keys.map((key, idx) => {
             if (key === "clear") {
               return (
                 <KeyButton
                   key={key}
                   keyIndex={idx}
-                  variant="action"
+                  variant="clear"
+                  theme={theme}
                   disabled={disabled || isPending || isSuccess || !value.length}
                   onClick={clear}
                   ariaLabel="Clear PIN"
-                  highlighted={highlightedKey === "clear"}
                 >
-                  Clear
+                  ×
                 </KeyButton>
               );
             }
@@ -312,44 +346,112 @@ export default function PinKeypad({
                   key={key}
                   keyIndex={idx}
                   variant="action"
+                  theme={theme}
                   disabled={disabled || isPending || isSuccess || !value.length}
                   onClick={backspace}
                   ariaLabel="Delete last digit"
-                  highlighted={highlightedKey === "back"}
                 >
-                  <Delete size={18} />
+                  <Delete size={22} strokeWidth={2.5} />
                 </KeyButton>
               );
             }
-            const keyDisabled = disabled || isPending || isSuccess || value.length >= maxLength;
             return (
               <KeyButton
                 key={key}
                 keyIndex={idx}
-                disabled={keyDisabled}
+                theme={theme}
+                disabled={disabled || isPending || isSuccess || value.length >= maxLength}
                 onClick={() => press(key)}
                 ariaLabel={`Digit ${key}`}
-                highlighted={highlightedKey === key}
               >
                 {key}
               </KeyButton>
             );
           })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          style={{
+            position: "relative",
+            padding: "16px",
+            borderRadius: "22px",
+            background: "linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.98) 100%)",
+            border: "1.5px solid rgba(226,232,240,0.9)",
+            boxShadow: "0 8px 32px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.9)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "10px",
+              maxWidth: "320px",
+              margin: "0 auto",
+              width: "100%",
+            }}
+          >
+            {keys.map((key, idx) => {
+              if (key === "clear") {
+                return (
+                  <KeyButton
+                    key={key}
+                    keyIndex={idx}
+                    variant="action"
+                    disabled={disabled || isPending || isSuccess || !value.length}
+                    onClick={clear}
+                    ariaLabel="Clear PIN"
+                    highlighted={highlightedKey === "clear"}
+                  >
+                    Clear
+                  </KeyButton>
+                );
+              }
+              if (key === "back") {
+                return (
+                  <KeyButton
+                    key={key}
+                    keyIndex={idx}
+                    variant="action"
+                    disabled={disabled || isPending || isSuccess || !value.length}
+                    onClick={backspace}
+                    ariaLabel="Delete last digit"
+                    highlighted={highlightedKey === "back"}
+                  >
+                    <Delete size={18} />
+                  </KeyButton>
+                );
+              }
+              return (
+                <KeyButton
+                  key={key}
+                  keyIndex={idx}
+                  disabled={disabled || isPending || isSuccess || value.length >= maxLength}
+                  onClick={() => press(key)}
+                  ariaLabel={`Digit ${key}`}
+                  highlighted={highlightedKey === key}
+                >
+                  {key}
+                </KeyButton>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {isPending && (
-        <div style={{
+        <div className={isLuxury ? "luxury-status" : undefined} style={isLuxury ? undefined : {
           display: "flex", justifyContent: "center", alignItems: "center",
           gap: "10px", color: "#64748b", fontSize: "13px", fontWeight: 700,
         }}>
-          <Loader2 size={17} className="is-spinning" style={{ color: "#16a34a" }} />
+          <Loader2 size={17} className="is-spinning" style={{ color: isLuxury ? "#4ade80" : "#16a34a" }} />
           Verifying your PIN…
         </div>
       )}
 
       {isSuccess && (
-        <div style={{
+        <div className={isLuxury ? "luxury-status luxury-status--success" : undefined} style={isLuxury ? undefined : {
           display: "flex", justifyContent: "center", alignItems: "center",
           gap: "8px", color: "#16a34a", fontSize: "14px", fontWeight: 800,
         }}>
@@ -362,7 +464,8 @@ export default function PinKeypad({
         <button
           type="button"
           onClick={() => onComplete?.(value)}
-          style={{
+          className={isLuxury ? "luxury-submit-pin" : undefined}
+          style={isLuxury ? undefined : {
             width: "100%",
             maxWidth: "320px",
             margin: "0 auto",
@@ -375,22 +478,37 @@ export default function PinKeypad({
             fontWeight: 800,
             cursor: "pointer",
             boxShadow: "0 6px 22px rgba(22,163,74,0.28)",
-            transition: "transform 0.15s ease, box-shadow 0.15s ease",
           }}
-          onMouseDown={(e) => { e.currentTarget.style.transform = "scale(0.98)"; }}
-          onMouseUp={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
         >
           Sign in with PIN
         </button>
       )}
 
-      <p style={{
-        margin: 0, textAlign: "center", fontSize: "11px",
-        fontWeight: 600, color: "#94a3b8", letterSpacing: "0.02em",
-      }}>
-        Keyboard supported · Enter to confirm
-      </p>
+      {isLuxury ? (
+        <p className="luxury-keypad-hint">Keyboard supported · Enter to confirm</p>
+      ) : (
+        <p style={{
+          margin: 0, textAlign: "center", fontSize: "11px",
+          fontWeight: 600, color: "#94a3b8", letterSpacing: "0.02em",
+        }}>
+          Keyboard supported · Enter to confirm
+        </p>
+      )}
+    </div>
+  );
+}
+
+export function LuxurySecureFooter() {
+  return (
+    <div className="luxury-secure-footer">
+      <div className="luxury-secure-footer__lockup">
+        <span className="luxury-secure-footer__label">Secured by</span>
+        {brandLogoSrc ? (
+          <img src={brandLogoSrc} alt="OlitechHub" className="luxury-secure-footer__logo" />
+        ) : (
+          <span className="luxury-secure-footer__label" style={{ fontSize: "13px" }}>OLITECHHUB</span>
+        )}
+      </div>
     </div>
   );
 }

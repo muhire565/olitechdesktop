@@ -31,7 +31,7 @@ $netlifyYml = Join-Path $root "electron-builder.netlify.yml"
     -replace "https://YOUR-SITE-NAME.netlify.app", $netlifyUrl |
     Set-Content $netlifyYml -NoNewline
 
-# package.json repository field
+# package.json repository field (must keep trailing comma before "scripts")
 $pkgPath = Join-Path $root "package.json"
 $pkgRaw = Get-Content $pkgPath -Raw
 $repoBlock = @"
@@ -41,12 +41,18 @@ $repoBlock = @"
   },
 "@
 if ($pkgRaw -match '"repository"\s*:') {
-    $pkgRaw = $pkgRaw -replace '"repository"\s*:\s*\{[^}]+\},?', $repoBlock.TrimEnd(",")
+    $pkgRaw = $pkgRaw -replace '(?s)"repository"\s*:\s*\{[^}]+\},?', $repoBlock
 } else {
     $pkgRaw = $pkgRaw -replace '("private"\s*:\s*true,)', "`$1`n$repoBlock"
 }
 Set-Content $pkgPath $pkgRaw.TrimEnd() -NoNewline
 
+try {
+    Get-Content $pkgPath -Raw | ConvertFrom-Json | Out-Null
+} catch {
+    Write-Error "package.json is invalid JSON after sync - fix manually before continuing."
+}
+
 Write-Host "Synced update host config:" -ForegroundColor Green
 Write-Host "  GitHub:  github.com/$owner/$repo"
-Write-Host "  Netlify: $netlifyUrl"
+Write-Host ('  Netlify: ' + $netlifyUrl)
