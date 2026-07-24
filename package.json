@@ -1,6 +1,6 @@
 {
   "name": "olitechdesktop",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "OLITECHHUB desktop POS for retail operations — by Olitech Hub",
   "author": {
     "name": "Olitech Hub",
@@ -11,7 +11,7 @@
   "main": "./out/main/index.js",
   "type": "module",
   "private": true,
-  "repository": {
+    "repository": {
     "type": "git",
     "url": "https://github.com/muhire565/olitechdesktop.git"
   },
